@@ -1,0 +1,165 @@
+1.
+width = 17
+height = 12.0
+delimiter = '.'
+
+a)	> 17
+	> Int
+	
+b)	> 8.5
+	> Float/Double
+	
+c)	> 8, possibly 8.0
+	> Int, float/double if floor function returns float/double
+	
+d)	> 1, possibly 1.0
+	> Int, float/double if the floor function returns float/double
+	
+e)	> 11
+	> Int
+	
+f) 	> Char '.' is 46 in ASCII, Implicit conversion from char to int = 46 * 5 = 230
+	> Int
+	> Or, just '.....' if Python works like that
+	> Type is String
+	
+2.
+a)	> 03:45:02
+	> 2 + (60*45) + (3 * pow(60,2))
+	
+b)	>>> totalSeconds = 6149
+	>>> seconds = totalSeconds % 60
+	>>> totalMinutes = totalSeconds // 60
+	>>> minutes = totalMinutes % 60 
+	>>> hours = totalMinutes // 60
+	>>> print(hours, minutes, seconds)
+	
+3.	>>>	def sqrt(s, acc):
+	>>>		x = s
+	>>>			for i in range(acc):
+	>>>				x = 0.5 * (x + s/x)
+	>>>		return x
+	
+	Bizarre things happen with s being negative.
+	Some values are -1 < 0 < 1
+	Others are vast
+
+4. 	
+a)	>>> math.sin(15)
+	= 0.6502878...
+b)	>>> pow(63, 2.5)
+	= 31502.9608608...
+c)	>>> math.sqrt(2498)
+	= 49.97999599983992...
+d)	>>> math.pi
+	= 3.141592653589793...
+	
+	
+5. (2.22)
+	1.	>>> r =5
+		>>> (4 / 3) * math.pi * pow(r, 3)
+		= 523.59877...
+	2.  >>> 3 + 0.75 * 59 + 24.95*0.6 * 60	
+		= $945.45
+	3.	>>> s = 6 + 52 / 60
+		>>> x = 8/60 + 15/60/60
+		>>> x *= 2
+		>>> y = 7/60 + 12/60/60
+		>>> y *= 3
+		>>> s += x + y
+		= 7.5016666
+		>>> h = floor(s)
+		>>> m = s = h
+		>>> m *= 60
+		= 30.1000000...
+		Arrival at 7:30
+
+6. Already done.
+
+7. 	####
+
+def convertToSeconds(hours, minutes, seconds):
+	return hours * pow(60, 2) + minutes * 60 + seconds
+	
+	####
+	
+8.	####
+
+def calcVolume(radius):
+	return (4/3) * math.pi * pow(r, 3)
+	
+def calcCost(units = 60, price = 24.95, shipping = [3, 0.75], discountPriceMultiplier = 0.4):
+	total = 0
+	i = 0
+	
+	# Calculate the shipping costs for the first X number of unique shipping costs. By default, only the first book has a unique shipping cost.
+	for i in range(len(shipping) - 1):
+		total += shipping[i]
+	
+	# Calculate the shipping cost for the final value in the shipping cost list. By default, n - 1 number of times.
+	total += shipping[len(shipping) - 1] * (units - i)
+	
+	discountPriceMultiplier = max(0, min(discountPriceMultiplier, 1))
+	
+	return total += (1 - discountPriceMultiplier) * units * price
+	
+	####
+	
+9.	a) a[2] = 2
+	b) a[10] = Index out of range exception.
+	c) a[-3] = Index out of range exception.
+	d) a[0:3] = list from 0, length 3 : [0, 1, 2]
+	e) a[:3] = list from start, length 3 : [0, 1, 2]
+	f) a[4:] = list starting at 4, full length : [4, 5, 6, 7, 8, 9]
+	g) a[:] = generates a sublist from start through to full length : [0, 1, 2, ..., 9]
+	h) a[::2] = generates a sublist from start through to full length, step of 2 : [0, 2, 4, 6, 8]
+	i) a[5::-1] = generates a sublist starting at 5, full length, with a step of -1 : [5, 4, 3, 2, 1, 0]
+	j) a[::2][3] = gets the element at index 3 from a sublist from start to end with step 2 : 6
+
+10.	a) 
+		a[*] = 4
+		a[4] = 4
+	b)
+		a[-*] = 4
+		a[-6] = 4
+	c)
+		a[*:*] = [0, 1]
+		a[0:2]
+	d)
+		a[:*] = [0, 1, 2]
+		a[:3]
+	e)
+		a[-*:] = [8, 9]
+		a[-2:] = [8, 9]
+	f)	
+		a[::*] = [0, 3, 6, 9]
+		a[::3] = [0, 3, 6, 9]
+	g)
+		a[::**] = [9, 6, 3, 0]
+		a[::-3]
+
+11. a)
+		a[::2]
+	b)
+		a[::-1]
+	c)
+		a[::-2]
+	d)
+		a[:5:-2]
+		
+12. a)
+		a[0] = 10
+		assigns the 1st element to 10
+	b)
+		a[2:4] = ["a", "b"]
+		gets the list from the element at index 2 to 4 and assigns it to ["a", "b"]
+	c)
+		a[2:4] = ["a", "b", "c", "d"]
+		gets the list from the element at index 2 to 4, and assigns it to the provided list, inserting the "c" and "d", shifting the previous elements along
+	d)
+		a[2:4:2] = ["a", "b"]
+		gets the list from 2 to 4, with a step of 2. In python, this is broken and doesn't correctly step to the 4 index.
+		this replaces the element at 2 with the elements "a", "b"
+		
+	
+	
