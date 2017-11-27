@@ -1,20 +1,30 @@
+#!/usr/bin/env python
+
+#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import random
 import math
 import csv
 
-# ta : time to next customer arrival
-# ts : time until customer is finished with teller
-# c : current time
-# Q : current queue length
-# maxQ : the size of the longest queue
+#plt.plot([2,2,3,4])
 
-ta = 0
-ts = 0
-c = 0
-maxQ = 0
-Q = 1
 
-# Repeatedly increment C to the time of the next critical event - either a customer arriving or a customer leaving (Being finished)
+# Question 2
+def Question2():
+    i = 1.1
+    idList = []
+    list = []
+    while(i <= 10):
+        list.append(i / (1-i))
+        idList.append(i)
+        i+=0.1
+    plt.plot(idList, list, antialiased=True)
+    
+    plt.ylabel('Mean Queue Length')
+    plt.xlabel("Beta/Alpha")
+    plt.title("Mean queue length variation with b/a increase")
+    plt.show()
+
 
 
 def nextTime(mean):
@@ -73,7 +83,7 @@ def checkMean(mean, iterations=10000):
         resultMean += nextTime(mean)
     resultMean /= iterations
     return resultMean
-    # This one is bullshit. Random seeding is seemingly different than what doctest author intended. Why check the floats so specifically? 
+    # This one is kinda bullshit. Random seeding is seemingly different than what doctest author intended. Why check the floats so specifically? 
 
 
 def readExperimentParameters(filename):
@@ -91,13 +101,21 @@ def readExperimentParameters(filename):
     """    
     
     csvFile = csv.reader(open(filename))
-    fuckPython = next(csvFile)
-    
+    pythonSucks = next(csvFile)
+   
     data = []
     for row in csvFile:
         list = []
-        for item in row:
-            list.append(int(item))
+        for i in range(len(row)):
+            if(row[i+1] == ""):
+                list.append(int(row[i]))
+                break
+            elif(row[i+1] == "h"):
+                list.append(int(row[i]) * 60)
+                break
+            else:
+                list.append(int(row[i]))
+            
         data.append(tuple(list))
     return data
 
@@ -119,4 +137,44 @@ def singleQueue(alpha, beta, time=480):
     >>> type(singleQueue(10, 9, 280))
     <class 'int'>
     """
-    # Add code here
+    # Implement algorithm above in PDF, takes parameters, and returns the MAX queue length
+    
+    # ta : time to next customer arrival
+    # ts : time until customer is finished with teller
+    # c : current time
+    # Q : current queue length
+    # maxQ : the size of the longest queue
+    
+    ta = 0
+    ts = 0
+    c = 0
+    maxQ = 0
+    Q = 1
+    
+    # Repeatedly increment C to the time of the next critical event - either a customer arriving or a customer leaving (Being finished)
+    
+    # Can't simplify this because I can't make a function that takes values by reference without using globals.
+    # Or I could use mutable lists to store them, but that's an affront to computer science.
+    while c < time:
+        if(ta < ts):
+            ts -= ta
+            #######
+            c += ta
+            Q+= 1
+            maxQ = Q if Q > maxQ else maxQ
+            ta = nextTime(alpha)
+            #######
+        else:
+            ta -= ts
+            c += ts
+            Q -= 1
+            ts = nextTime(beta)
+            
+        while(Q == 0):
+            #######
+            c += ta
+            Q+= 1
+            maxQ = Q if Q > maxQ else maxQ
+            ta = nextTime(alpha)
+            #######
+    return maxQ
